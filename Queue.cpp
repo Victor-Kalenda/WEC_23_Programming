@@ -134,7 +134,7 @@ Datatype Queue:: get_destination(unsigned int index)
     }
 }
 
-int Queue:: get_size()
+unsigned int Queue:: get_size() const
 {
     return size;
 }
@@ -150,6 +150,7 @@ bool Queue:: remove(unsigned int index)
     {
         delete head;
         head = nullptr;
+        size--;
         return true;
     }
     if(index == 0)
@@ -158,7 +159,7 @@ bool Queue:: remove(unsigned int index)
         head = head->next;
         delete temp;
         temp = nullptr;
-        size --;
+        size--;
         return true;
     }
     package* prev = nullptr;
@@ -182,17 +183,17 @@ bool Queue:: remove(unsigned int index)
 }
 
 // reorders packages according to deadline and destination
-bool Queue:: reorder(int * array)
+bool Queue:: reorder(const float * array)
 {
     if(size == 0)
     {
         return false;
     }
     // check the distance of each package from each warehouse to it's destination
-    int path_lengths[size];
+    float path_lengths[size];
     for(int i = 0; i < size; i++)
     {
-        int shortest_path = 1000;
+        float shortest_path = 1000;
         /*
         for(int j = 9; j < 12; j++)
         {
@@ -247,6 +248,7 @@ bool Queue:: reorder(int * array)
         (*this).enqueue((*this).get_deadline(index), (*this).get_destination(index));
         (*this).remove(index);
     }
+    return true;
 }
 
 void Queue:: print()
@@ -260,4 +262,22 @@ void Queue:: print()
         temp = temp->next;
     }
     temp = nullptr;
+}
+
+int Queue:: offload(int quantity, int destination)
+{
+    int num_packages = quantity;
+    for(int i = 0; i < size; i++)
+    {
+        if((*this).get_destination(i) == destination)
+        {
+            (*this).remove(i);
+            num_packages--;
+            if(num_packages == 0)
+            {
+                return num_packages;
+            }
+        }
+    }
+    return num_packages;
 }

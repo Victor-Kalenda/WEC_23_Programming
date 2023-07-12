@@ -12,31 +12,23 @@
 #include <iostream>
 #include <fstream>
 #include "Queue.h"
-#include "Trucks.h"
+#include "TruckList.h"
 
 using namespace std;
 
-struct expedition{
-    int shortest_path = 2000; // Longer than any distance in the given dataset
-    int dist_to_k = 0;
-    int dist_to_dest = 0;
-    float time_to_k = 0;
-    float time_to_dest = 0;
-};
 
 Queue identify_priorities();
 string get_city(istream & input_file, int & number_of_deliveries);
 void ignore_characters(int count, istream & input_file);
 
-Trucks send_trucks(Queue & packages);
-void output_logistics(Trucks & deliveries);
+TruckList send_trucks(Queue & packages);
+void output_logistics(TruckList & deliveries);
 void analyse_travel();
 void ignore_cells(int count, istream & input_file);
 int get_number(istream & input_file);
 int get_day(istream & input_file);
 int check_location(string city);
-expedition get_trip(logistics & trucker, Queue & packages);
-expedition return_home(logistics & trucker);
+void add_trip(info & trucker, Queue & packages);
 
 #define HOURLY               20
 #define OVERTIME             30
@@ -45,14 +37,13 @@ expedition return_home(logistics & trucker);
 #define LATE_FEE             200
 #define COST_KM              0.68
 #define SPEED                100.0
-#define SPEED_EXCEPTION      110.0
-#define TRAFFIC_FACTOR       0.5 // Not yet implemented
+#define TRAFFIC_FACTOR       0.7 // Not yet implemented
 #define DAILY_WORK_LAW       14.0
 #define CITIES               10
-#define NIAGARA_FALLS        6 // Index of Niagara falls, for special case where speed changes
 #define MISSISSAUGA          2
+#define TRUCK_CAPACITY       5
 
-int *dist_array = new int[CITIES*CITIES];
+float *dist_array = new float[CITIES*CITIES];
 char city_array[20];
 int city_index = 0;
 
@@ -73,12 +64,12 @@ int main()
     */
 
     Queue priorities = identify_priorities();
-    priorities.print();
+    //priorities.print();
 
-    //Trucks deliveries = send_trucks(priorities);
-    //deliveries.print();
+    TruckList deliveries = send_trucks(priorities);
+    deliveries.print();
     // There is no longer a use for dist_array
-    delete dist_array;
+    delete [] dist_array;
     dist_array = nullptr;
 
     //output_logistics(deliveries);
@@ -202,7 +193,6 @@ Queue identify_priorities()
 
     return packages;
 }
-
 string get_city(istream & input_file, int & number_of_deliveries)
 {
     char city[20] = {NULL};
@@ -341,193 +331,127 @@ int check_location(string city)
     }
 }
 
-
 // Send the trucks out, eliminating each package from the queue with as few trucks as possible
 // return a list of the trucks required for the week with information on their projected journeys
 // This implementation will push the most amount of work out of truckers possible (14 hour daily work law)
-Trucks send_trucks(Queue & packages)
+TruckList send_trucks(Queue & packages)
 {
-    Trucks workers;
-    int today = 1;
+    TruckList workers;
+    int current_day = 1;
+    float time = 0.0;
     // Systematically go through each package allocating them, one trucker at a time
     while(packages.get_size() != 0)
     {
         // Keep adding drivers depending on demand on that day, Each day all truckers regain the ability to work
-        while(packages.get_deadline(0) == today && packages.get_size() != 0)
+        while(packages.get_deadline(0) == current_day && packages.get_size() != 0)
         {
-            truck trucker;
-            float todays_hours = 0;
+            truck* trucker = new truck();
+            //info trucker;
             // Allocate packages to drivers until they are unable to deliver the packages legally
-            while(todays_hours < DAILY_WORK_LAW && packages.get_size() != 0)
+            while(trucker->data.todays_hours < DAILY_WORK_LAW && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
             {
                 // check if the driver has completed the packages for the day before
-                if(packages.get_deadline(0) != today)
+                if(packages.get_deadline(0) == current_day)
                 {
-                    // reset the hours worked for the day
-                    todays_hours = 0;
-                }
-                // Find the distance of the shortest path from current position to warehouse to destination
-                expedition trip = get_trip(trucker.data, packages);
-
-                todays_hours += trip.time_to_k + trip.time_to_dest;
-                // determine if the trucker can handle the package, if he can, dequeue the package
-                if(todays_hours < DAILY_WORK_LAW)
-                {
-                    trucker.data.total_distance += trip.dist_to_k + trip.dist_to_dest;
-                    trucker.data.total_hours += trip.time_to_k + trip.time_to_dest;
-                    trucker.data.current_position = packages.get_destination(0);
-                    if(trucker.data.longest_day < todays_hours)
-                    {
-                        trucker.data.longest_day = todays_hours;
-                    }
-                    trucker.data.late_deliveries = 0;
-                    packages.dequeue();
-                }
-                // if the trucker cannot handle the package, log the trucker and start again with a new trucker
-                else
-                {
-                    trucker.data.current_day = packages.get_deadline(0);
-                    workers.insert(trucker);
+                    // make the trucker travel to where they are needed
+                    add_trip(trucker->data, packages);
                 }
             }
+            workers.insert(trucker);
         }
-        today++;
+        current_day++;
         // reuse the truckers which are currently out of HQ
         int i = 0;
-        cout << workers.get_workers()<< packages.get_size() << endl;
-        while(i < workers.get_workers() && packages.get_size() != 0)
+        while(i < workers.get_size() && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
         {
-            float todays_hours = 0;
-            while(todays_hours < DAILY_WORK_LAW && packages.get_size() != 0)
+            truck* trucker = workers.select(i);
+            // reset the hours worked for the day
+            trucker->data.todays_hours = 0;
+            trucker->data.current_day = current_day;
+            // Allocate packages to drivers until they are unable to deliver the packages legally
+            while(trucker->data.todays_hours < DAILY_WORK_LAW && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
             {
-                if(packages.get_deadline(0) != today)
+                // check if the driver has completed the packages for the day before
+                if(packages.get_deadline(0) == current_day)
                 {
-                    // Send the remaining truckers home, these truckers will be at the end of the list
-                    // Truckers sent home will not be manipulated for the rest of send_trucks
-                    while(i < workers.get_size())
-                    {
-                        logistics trucker = workers.select(i);
-                        expedition trip = return_home(trucker);
-                        workers.replace(trucker, i);
-                        workers.decrement_workers();
-                        i++;
-                    }
-                    today++;
-                    // Set i back to zero and remain in the for loop
-                    i = 0;
+                    // make the trucker travel to where they are needed
+                    add_trip(trucker->data, packages);
                 }
                 else
                 {
-                    logistics trucker = workers.select(i);
-                    expedition trip = get_trip(trucker, packages);
-                    todays_hours += trip.time_to_k + trip.time_to_dest;
-                    // determine if the trucker can handle the package, if he can, dequeue the package
-                    if (todays_hours < DAILY_WORK_LAW)
-                    {
-                        trucker.total_distance += trip.dist_to_k + trip.dist_to_dest;
-                        trucker.total_hours += trip.time_to_k + trip.time_to_dest;
-                        trucker.current_position = packages.get_destination(0);
-                        if(trucker.longest_day < todays_hours)
-                        {
-                            trucker.longest_day = todays_hours;
-                        }
-                        trucker.late_deliveries = 0;
-                        packages.dequeue();
-                    }
-                    // if the trucker cannot handle the package, log the trucker and start again with a new trucker
-                    else
-                    {
-                        trucker.current_day = packages.get_deadline(0);
-                        // update the truckers information according to the new packages you allocated to them
-                        workers.replace(trucker, i);
-                    }
+                    // keep reusing truckers in the field as long as possible
+                    current_day = packages.get_deadline(0);
                 }
             }
+            i++;
         }
     }
-    // Bring each truck back to headquarters at the end of their trips
-    for(int i = 0; i < workers.get_size(); i++)
-    {
-        logistics trucker = workers.select(i);
-        expedition trip = return_home(trucker);
-        workers.replace(trucker, i);
-        workers.decrement_workers();
-    }
+    // return home can be implemented if need be
     return workers;
 }
 
-expedition get_trip(logistics & trucker, Queue & packages)
+void add_trip(info & trucker, Queue & packages)
 {
-    expedition temp;
-    temp.dist_to_k = dist_array[(trucker.current_position - 1) * CITIES + (MISSISSAUGA - 1)];
-    temp.dist_to_dest = dist_array[(MISSISSAUGA - 1) * CITIES + (packages.get_destination(0) - 1)];
-    if(trucker.current_position == NIAGARA_FALLS)
+    logistics package;
+    // determine if the trucker has just been reserved or if they are currently in the field
+    if(!trucker.deliveries.empty())
     {
-        temp.time_to_k = float(temp.dist_to_k)/ SPEED_EXCEPTION;
+        package.start_destination = trucker.deliveries.select(0).end_destination;
+        package.start_quantity = trucker.deliveries.select(0).end_quantity;
+        package.start_time = (trucker.deliveries.select(0).end_time - trucker.deliveries.select(0).start_time) + (trucker.current_day - 1) * 24;
     }
     else
     {
-        temp.time_to_k = float(temp.dist_to_k) / SPEED;
+        package.start_destination = MISSISSAUGA;
+        package.end_destination = packages.get_destination(0);
     }
-
-    // if the destination is Niagara Falls
-    if (packages.get_destination(0) == NIAGARA_FALLS)
+    // determine if the trucker needs to go home
+    if(package.start_quantity == 0)
     {
-        temp.time_to_dest = float(temp.dist_to_dest) / SPEED_EXCEPTION;
+        package.pickup = true;
+        int target_warehouse = MISSISSAUGA;
+        // add a trip to the most suitable warehouse for the next package destination
+        /*
+        int shortest_path = 1000;
+        int target_warehouse = -1;
+        // check which warehouse is closest to the next package destination
+        for(int i = 10; i < 13; i++)
+        {
+            int travel_distance = dist_array[packages.get_destination(0) * CITIES + i];
+            if(travel_distance < shortest_path)
+            {
+                shortest_path = travel_distance;
+                target_warehouse = i;
+            }
+        }
+         */
+        package.end_destination = target_warehouse;
+        package.end_time = package.start_time + dist_array[target_warehouse * CITIES + packages.get_destination(0)] / SPEED;
+        package.end_quantity = TRUCK_CAPACITY;
     }
     else
     {
-        temp.time_to_dest = float(temp.dist_to_dest) / SPEED;
+        // identify the next destination
+        package.end_destination = packages.get_destination(0);
+        package.pickup = false;
+        package.end_time = package.start_time + dist_array[package.start_destination * CITIES + package.end_destination] / SPEED;
+        // drop off as many packages as possible at the location, remove the packages that are at that location
+        package.end_quantity = packages.offload(package.start_quantity, package.end_destination);
     }
-    //cout << "curr_pos = " << trucker.current_position << " destination = " << packages.get_destination(0) << " - " << temp.dist_to_k + temp.dist_to_dest << " - " << temp.time_to_k + temp.time_to_dest << endl;
-    /*
-    for (int k = 10; k < 13; k++)
+    // determine if the trucker can travel to it's location with the hours it has already worked today
+    if(trucker.todays_hours + (package.end_time - package.start_time) < DAILY_WORK_LAW)
     {
-
-        temp.dist_to_k = dist_array[trucker.current_position * CITIES + k];
-        temp.dist_to_dest = dist_array[k * CITIES + packages.get_destination(0)];
-        temp.shortest_path = temp.dist_to_k + temp.dist_to_dest;
-        // if the trucker is currently in Niagara Falls
-        if(trucker.current_position == NIAGARA_FALLS)
-        {
-            temp.time_to_k = temp.dist_to_k / SPEED_EXCEPTION;
-        }
-        else
-        {
-            temp.time_to_k = temp.dist_to_k / SPEED;
-        }
-
-        // if the destination is Niagara Falls
-        if (packages.get_destination(0) == NIAGARA_FALLS)
-        {
-            temp.time_to_dest = temp.dist_to_dest / SPEED_EXCEPTION;
-        }
-        else
-        {
-            temp.time_to_dest = temp.dist_to_dest / SPEED;
-        }
-    }
-    */
-    return temp;
-}
-
-expedition return_home(logistics & trucker)
-{
-    expedition temp;
-    temp.dist_to_dest = dist_array[(trucker.current_position - 1) * CITIES + (MISSISSAUGA - 1)];
-    temp.shortest_path = temp.dist_to_dest;
-    // if the trucker is currently in Niagara Falls
-    if(trucker.current_position == NIAGARA_FALLS)
-    {
-        temp.time_to_dest = temp.dist_to_dest / SPEED_EXCEPTION;
+        trucker.todays_hours += package.end_time - package.start_time;
+        trucker.deliveries.insert(package);
     }
     else
     {
-        temp.time_to_dest = temp.dist_to_dest / SPEED;
+        // clock out the trucker for the day
+        trucker.todays_hours = DAILY_WORK_LAW;
     }
 }
 
-void output_logistics(Trucks & deliveries)
+void output_logistics(TruckList & deliveries)
 {
     ofstream output("output.csv");
     if(!output)
@@ -544,23 +468,10 @@ void output_logistics(Trucks & deliveries)
 
     for(int i = 0; i < deliveries.get_size(); i++)
     {
-        logistics temp = deliveries.select(i);
-        late_deliveries += temp.late_deliveries;
-        if(longest_day < temp.longest_day)
-        {
-            longest_day = temp.longest_day;
-        }
-        if(temp.total_hours > OVERTIME_LAW)
-        {
-            overtime += temp.total_hours - OVERTIME_LAW;
-            expenses += (temp.total_hours - OVERTIME_LAW) * OVERTIME + (OVERTIME_LAW * HOURLY);
-        }
-        else
-        {
-            expenses += temp.total_hours * HOURLY;
-        }
-        distance_travelled += temp.total_distance;
-        expenses += TRUCKER_BASE;
+        // total cost of the driver
+        // total time driving in the day
+        // total distance travelled for the day
+        // total cost of the day
     }
     expenses += late_deliveries * LATE_FEE + distance_travelled * COST_KM;
 

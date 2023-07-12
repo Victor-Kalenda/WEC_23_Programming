@@ -25,10 +25,11 @@ class Queue {
         ~Queue();
         Datatype get_deadline(unsigned int index);
         Datatype get_destination(unsigned int index);
-        int get_size();
+        unsigned int get_size() const;
         bool enqueue(Datatype time, Datatype location);
         Datatype dequeue();
-        bool reorder(int * array);
+        int offload(int quantity, int destination);
+        bool reorder(const float * array);
         bool remove(unsigned int index);
         void print();
 };
