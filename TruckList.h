@@ -8,7 +8,8 @@
 #include "DeliveryList.h"
 
 struct info{
-    float todays_hours = 0.0;
+    float daily_hours[7];
+    bool available = true;
     unsigned int current_day = 1;
     DeliveryList deliveries;
 };
@@ -21,7 +22,7 @@ struct truck{
 
 class TruckList {
     private:
-        const unsigned int capacity = 100;
+        const unsigned int capacity = 400;
         unsigned int size; // the overall size of the linked list containing trucker information
         truck* head;
 

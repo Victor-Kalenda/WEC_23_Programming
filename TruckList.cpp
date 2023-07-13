@@ -38,7 +38,7 @@ bool TruckList:: insert(truck* new_truck)
 {
     if(size == capacity)
     {
-        cout << "Invalid Index" << endl;
+        cout << "TruckList Reached Capacity" << endl;
         delete new_truck;
         new_truck = nullptr;
         return false;
@@ -57,10 +57,18 @@ unsigned int TruckList:: get_size()
 void TruckList:: print()
 {
     truck* temp = head;
+    cout << "Trucks Used: " << (*this).get_size() << endl;
     for(int i = 0; i < size; i++)
     {
         temp->data.deliveries.print();
-        cout << temp->data.todays_hours << endl;
+        float total_hours = 0;
+        for(int j = 0; j < 7; j++)
+        {
+            total_hours += temp->data.daily_hours[j];
+            cout << "Day " << j + 1 << " hours: " << temp->data.daily_hours[j] << " |";
+        }
+        cout << endl;
+        cout << "Total hours : " << total_hours << endl;
         temp = temp->next;
     }
     temp = nullptr;
@@ -70,7 +78,7 @@ truck* TruckList:: select(unsigned int index)
 {
     if(index >= size)
     {
-        cout << "Invalid Index" << endl;
+        cout << "Invalid Index TruckList Select" << endl;
         return head;
     }
     truck* temp = head;
