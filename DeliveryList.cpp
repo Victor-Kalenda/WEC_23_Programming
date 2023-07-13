@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <iomanip>
+
 
 using namespace std;
 
@@ -40,7 +42,7 @@ bool DeliveryList:: insert(logistics value)
 {
     if(size == capacity)
     {
-        cout << "Invalid Index" << endl;
+        cout << "DeliveryList Reached Capacity" << endl;
         return false;
     }
     delivery* new_delivery = new delivery(value);
@@ -53,7 +55,7 @@ logistics DeliveryList:: select(unsigned int index)
 {
     if(index >= size)
     {
-        cout << "Invalid Index" << endl;
+        cout << "Invalid Index DeliveryList Select" << endl;
         return {-1, -1, false, -1, -1, -1, -1};
     }
     delivery* temp = head;
@@ -82,7 +84,10 @@ void DeliveryList:: print()
     delivery* temp = head;
     for(int i = 0; i < size; i++)
     {
-        cout << "delivery " << i << " start_time " << temp->data.start_time << " end_time " << temp->data.end_time << endl;
+        cout << "delivery " << setw(2) << i << "| start_time " << setw(7) << temp->data.start_time << "| end_time "
+            << setw(7) << temp->data.end_time << "| start_quantity " << temp->data.start_quantity << "| end_quantity "
+            << temp->data.end_quantity << "| start_destination " << setw(2) << temp->data.start_destination
+            << "| end_destination " << setw(2) << temp->data.end_destination << endl;
         temp = temp->next;
     }
 }

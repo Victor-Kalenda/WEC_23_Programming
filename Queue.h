@@ -28,7 +28,7 @@ class Queue {
         unsigned int get_size() const;
         bool enqueue(Datatype time, Datatype location);
         Datatype dequeue();
-        int offload(int quantity, int destination);
+        int offload(int quantity, int destination, int deadline);
         bool reorder(const float * array);
         bool remove(unsigned int index);
         void print();

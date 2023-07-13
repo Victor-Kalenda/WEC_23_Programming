@@ -29,6 +29,8 @@ int get_number(istream & input_file);
 int get_day(istream & input_file);
 int check_location(string city);
 void add_trip(info & trucker, Queue & packages);
+float get_weeks_hours(info & trucker);
+
 
 #define HOURLY               20
 #define OVERTIME             30
@@ -39,9 +41,11 @@ void add_trip(info & trucker, Queue & packages);
 #define SPEED                100.0
 #define TRAFFIC_FACTOR       0.7 // Not yet implemented
 #define DAILY_WORK_LAW       14.0
+#define WEEKLY_WORK_LAW      70.0
 #define CITIES               10
 #define MISSISSAUGA          2
 #define TRUCK_CAPACITY       5
+#define START_TIME           6.0;
 
 float *dist_array = new float[CITIES*CITIES];
 char city_array[20];
@@ -64,6 +68,7 @@ int main()
     */
 
     Queue priorities = identify_priorities();
+    // print queue to test the addition and reordering of data into the queue
     //priorities.print();
 
     TruckList deliveries = send_trucks(priorities);
@@ -346,9 +351,9 @@ TruckList send_trucks(Queue & packages)
         while(packages.get_deadline(0) == current_day && packages.get_size() != 0)
         {
             truck* trucker = new truck();
-            //info trucker;
+            trucker->data.current_day = current_day;
             // Allocate packages to drivers until they are unable to deliver the packages legally
-            while(trucker->data.todays_hours < DAILY_WORK_LAW && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
+            while(trucker->data.available && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
             {
                 // check if the driver has completed the packages for the day before
                 if(packages.get_deadline(0) == current_day)
@@ -366,10 +371,11 @@ TruckList send_trucks(Queue & packages)
         {
             truck* trucker = workers.select(i);
             // reset the hours worked for the day
-            trucker->data.todays_hours = 0;
+            trucker->data.daily_hours[current_day - 1] = 0;
+            trucker->data.available = true;
             trucker->data.current_day = current_day;
             // Allocate packages to drivers until they are unable to deliver the packages legally
-            while(trucker->data.todays_hours < DAILY_WORK_LAW && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
+            while(trucker->data.available && packages.get_size() != 0 && packages.get_deadline(0) == current_day)
             {
                 // check if the driver has completed the packages for the day before
                 if(packages.get_deadline(0) == current_day)
@@ -398,7 +404,15 @@ void add_trip(info & trucker, Queue & packages)
     {
         package.start_destination = trucker.deliveries.select(0).end_destination;
         package.start_quantity = trucker.deliveries.select(0).end_quantity;
-        package.start_time = (trucker.deliveries.select(0).end_time - trucker.deliveries.select(0).start_time) + (trucker.current_day - 1) * 24;
+        if(trucker.daily_hours[trucker.current_day - 1] == 0)
+        {
+            // make all truckers start driver at 06:00 and work 14 hours straight to 20:00
+            package.start_time = (trucker.current_day - 1) * 24 + START_TIME;
+        }
+        else
+        {
+            package.start_time = trucker.deliveries.select(0).end_time;
+        }
     }
     else
     {
@@ -427,7 +441,20 @@ void add_trip(info & trucker, Queue & packages)
          */
         package.end_destination = target_warehouse;
         package.end_time = package.start_time + dist_array[target_warehouse * CITIES + packages.get_destination(0)] / SPEED;
-        package.end_quantity = TRUCK_CAPACITY;
+        // determine if the trucker can travel to its location with the hours it has already worked today and over the week
+        float weeks_hours = get_weeks_hours(trucker);
+        float trip = package.end_time - package.start_time;
+        if(trucker.daily_hours[trucker.current_day - 1] + trip < DAILY_WORK_LAW && weeks_hours + trip < WEEKLY_WORK_LAW)
+        {
+            package.end_quantity = TRUCK_CAPACITY;
+            trucker.daily_hours[trucker.current_day - 1] += package.end_time - package.start_time;
+            trucker.deliveries.insert(package);
+        }
+        else
+        {
+            // clock out the trucker for the day
+            trucker.available = false;
+        }
     }
     else
     {
@@ -435,20 +462,32 @@ void add_trip(info & trucker, Queue & packages)
         package.end_destination = packages.get_destination(0);
         package.pickup = false;
         package.end_time = package.start_time + dist_array[package.start_destination * CITIES + package.end_destination] / SPEED;
-        // drop off as many packages as possible at the location, remove the packages that are at that location
-        package.end_quantity = packages.offload(package.start_quantity, package.end_destination);
+
+        // determine if the trucker can travel to its location with the hours it has already worked today and over the week
+        float weeks_hours = get_weeks_hours(trucker);
+        float trip = package.end_time - package.start_time;
+        if(trucker.daily_hours[trucker.current_day - 1] + trip < DAILY_WORK_LAW && weeks_hours + trip < WEEKLY_WORK_LAW)
+        {
+            // drop off as many packages as possible at the location, dequeue the packages that have been delivered
+            package.end_quantity = packages.offload(package.start_quantity, package.end_destination, trucker.current_day);
+            trucker.daily_hours[trucker.current_day - 1] += package.end_time - package.start_time;
+            trucker.deliveries.insert(package);
+        }
+        else
+        {
+            // clock out the trucker for the day
+            trucker.available = false;
+        }
     }
-    // determine if the trucker can travel to it's location with the hours it has already worked today
-    if(trucker.todays_hours + (package.end_time - package.start_time) < DAILY_WORK_LAW)
+}
+float get_weeks_hours(info & trucker)
+{
+    float weeks_hours = 0;
+    for(int i = 0; i < 7; i++)
     {
-        trucker.todays_hours += package.end_time - package.start_time;
-        trucker.deliveries.insert(package);
+        weeks_hours += trucker.daily_hours[i];
     }
-    else
-    {
-        // clock out the trucker for the day
-        trucker.todays_hours = DAILY_WORK_LAW;
-    }
+    return weeks_hours;
 }
 
 void output_logistics(TruckList & deliveries)

@@ -120,7 +120,7 @@ Datatype Queue:: get_destination(unsigned int index)
     }
     if (index >= size)
     {
-        cout << "Invalid index" << endl;
+        cout << "Invalid Index" << endl;
         return -1;
     }
     else
@@ -264,19 +264,25 @@ void Queue:: print()
     temp = nullptr;
 }
 
-int Queue:: offload(int quantity, int destination)
+int Queue:: offload(int quantity, int destination, int deadline)
 {
     int num_packages = quantity;
-    for(int i = 0; i < size; i++)
+    int index = 0;
+    int queue_size = size;
+    for(int i = 0; i < queue_size; i++)
     {
-        if((*this).get_destination(i) == destination)
+        if((*this).get_destination(index) == destination && (*this).get_deadline(index) == deadline)
         {
-            (*this).remove(i);
+            (*this).remove(index);
             num_packages--;
             if(num_packages == 0)
             {
                 return num_packages;
             }
+        }
+        else
+        {
+            index++;
         }
     }
     return num_packages;

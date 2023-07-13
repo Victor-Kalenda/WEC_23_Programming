@@ -10,9 +10,11 @@ using namespace std;
 #define WEC_EXAMPLE_DELIVERYLIST_H
 
 #define MISSISSAUGA 2
+#define START_TIME  6.0
+
 struct logistics{
-    float start_time = 0.0;
-    float end_time = 0.0;
+    float start_time = START_TIME;
+    float end_time = START_TIME;
     bool pickup = true;
     int start_destination = MISSISSAUGA;
     int end_destination = MISSISSAUGA;
@@ -28,7 +30,7 @@ struct delivery{
 
 class DeliveryList {
     private:
-        const unsigned int capacity = 200;
+        const unsigned int capacity = 700;
         unsigned int size;
         delivery* head;
     public:
