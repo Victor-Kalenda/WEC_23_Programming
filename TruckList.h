@@ -32,7 +32,7 @@ class TruckList {
         bool insert(truck* new_truck);
         unsigned int get_size();
         void print();
-        truck* select(unsigned int index);
+        truck* select(unsigned int index); // pointer to a pointer
 };
 
 

@@ -1,11 +1,10 @@
 /*
- * Contributors: Alexander Hamersma, Victor Kalenda
+ * Created by Victor Kalenda on 2023-04-03
  *
  * Example solution to 2023 WEC Programming Question
  *
  * Difficulty level: 4
  *
- * All Drivers start work at 00:00 each day and work 14 hours straight
  */
 
 
@@ -509,7 +508,7 @@ float get_weeks_hours(info & trucker)
  */
 void output_logistics(TruckList & trucks)
 {
-    ofstream output("output.json");
+    ofstream output("csv_solution_output.json");
     if(!output)
     {
         cout << "File did not Open" << endl;
