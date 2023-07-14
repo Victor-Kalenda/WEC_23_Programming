@@ -91,3 +91,24 @@ void DeliveryList:: print()
         temp = temp->next;
     }
 }
+
+// reorders the deliveries in order of time
+void DeliveryList:: reverse_list()
+{
+    if(size == 0)
+    {
+        return;
+    }
+    delivery* prev = nullptr;
+    delivery* curr = head;
+    while(head != nullptr)
+    {
+        head = head->next;
+        curr->next = prev;
+        prev = curr;
+        curr = head;
+    }
+    head = prev;
+    prev = nullptr;
+    curr = nullptr;
+}

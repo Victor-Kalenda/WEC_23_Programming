@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 #ifndef WEC_EXAMPLE_DELIVERYLIST_H
 #define WEC_EXAMPLE_DELIVERYLIST_H
 
@@ -42,6 +43,7 @@ class DeliveryList {
         void output_delivery(ostream & output_file);
         unsigned int get_size() const;
         void print();
+        void reverse_list();
 };
 
 
