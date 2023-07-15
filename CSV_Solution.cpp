@@ -61,7 +61,7 @@ int main()
 {
     analyse_travel();
     // Print array to test analysis
-    /*
+
     for(int i = 0; i < CITIES; i++)
     {
         for(int j = 0; j < CITIES; j++)
@@ -70,16 +70,16 @@ int main()
         }
         cout << endl;
     }
-    */
 
-    Queue packages = identify_priorities();
+
+    //Queue packages = identify_priorities();
     // print queue to test the addition and reordering of data into the queue
     //packages.print();
 
-    TruckList trucks = send_trucks(packages);
-    trucks.print();
+    //TruckList trucks = send_trucks(packages);
+    //trucks.print();
 
-    output_logistics(trucks);
+    //output_logistics(trucks);
 
     // There is no longer a use for dist_array
     delete [] dist_array;

@@ -5,7 +5,7 @@
 #include "Queue.h"
 #include <iostream>
 
-#define CITIES 10
+#define CITIES 13
 #define MISSISSAUGA 2
 
 using namespace std;
@@ -36,7 +36,7 @@ Queue:: ~Queue()
     size = 0;
 }
 
-bool Queue:: enqueue(Datatype time, Datatype location)
+bool Queue:: enqueue(Datatype time, Datatype drop_location)
 {
     if(size == capacity)
     {
@@ -45,7 +45,7 @@ bool Queue:: enqueue(Datatype time, Datatype location)
     }
     else
     {
-        package *new_package = new package(time, location);
+        package *new_package = new package(time, drop_location);
         if(size == 0)
         {
             head = new_package;
@@ -189,25 +189,21 @@ bool Queue:: reorder(const float * array)
     {
         return false;
     }
-    // check the distance of each package from each warehouse to it's destination
+    // check the distance from each warehouse to a packages destination, log the data in an array
     float path_lengths[size];
     for(int i = 0; i < size; i++)
     {
         float shortest_path = 1000;
-        /*
-        for(int j = 9; j < 12; j++)
+        for(int j = 10; j < CITIES; j++)
         {
-            if(shortest_path > array[((*this).get_destination(i) - 1) * CITIES + j])
+            if(shortest_path > array[((*this).get_destination(i) - 1) * CITIES + (j)])
             {
-                shortest_path = array[((*this).get_destination(i) - 1) * CITIES + j];
+                shortest_path = array[((*this).get_destination(i) - 1) * CITIES + (j)];
             }
         }
-         */
-        shortest_path = array[((*this).get_destination(i) - 1) * CITIES + (MISSISSAUGA- 1)];
         path_lengths[i] = shortest_path;
-        //cout << shortest_path << endl;
     }
-    // reorder the queue from shortest to longest trips
+    // reorder the queue from shortest to longest trips from the warehouses to the destinations
     Queue temp;
     for(int i = 0; i < size; i++)
     {
