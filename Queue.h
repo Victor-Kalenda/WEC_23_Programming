@@ -24,11 +24,11 @@ class Queue {
         Queue();
         ~Queue();
         Datatype get_deadline(unsigned int index);
+        void reset_deadline(unsigned int index);
         Datatype get_destination(unsigned int index);
-        unsigned int get_size() const;
+        [[nodiscard]]unsigned int get_size() const;
         bool enqueue(Datatype time, Datatype drop_location);
-        Datatype dequeue();
-        int offload(int quantity, int destination, int deadline);
+        unsigned int offload(unsigned int quantity, unsigned int destination, unsigned int deadline);
         bool reorder(const float * array);
         bool remove(unsigned int index);
         void print();

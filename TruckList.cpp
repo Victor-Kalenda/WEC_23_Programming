@@ -18,20 +18,23 @@ TruckList:: TruckList()
     size = 0;
     head = nullptr;
 }
-/*
+
 TruckList:: ~TruckList()
 {
     truck* temp = nullptr;
     while(head != nullptr)
     {
         temp = head->next;
+        // destruct the linked list of the node
+        head->data.deliveries.~DeliveryList();
+        // destruct the node
         delete head;
         head = temp;
     }
     temp = nullptr;
     size = 0;
 }
- */
+
 
 // Insert truckers like a stack, order is irrelevant
 bool TruckList:: insert(truck* new_truck)
@@ -49,7 +52,7 @@ bool TruckList:: insert(truck* new_truck)
     return true;
 }
 
-unsigned int TruckList:: get_size()
+unsigned int TruckList:: get_size() const
 {
     return size;
 }
@@ -58,6 +61,7 @@ void TruckList:: print()
 {
     truck* temp = head;
     cout << "Trucks Used: " << (*this).get_size() << endl;
+    cout << "Late Deliveries: " << late_deliveries << endl;
     for(int i = 0; i < size; i++)
     {
         temp->data.deliveries.print();

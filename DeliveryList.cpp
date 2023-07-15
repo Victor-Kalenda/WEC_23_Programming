@@ -35,6 +35,7 @@ DeliveryList:: ~DeliveryList()
         delete head;
         head = temp;
     }
+    temp = nullptr;
     size = 0;
 }
 
@@ -56,7 +57,7 @@ logistics DeliveryList:: select(unsigned int index)
     if(index >= size)
     {
         cout << "Invalid Index DeliveryList Select" << endl;
-        return {-1, -1, false, -1, -1, -1, -1};
+        return {1000, 1000, false, 1000, 1000, 1000, 1000};
     }
     delivery* temp = head;
     for(int i = 0; i < index; i++)
@@ -64,9 +65,6 @@ logistics DeliveryList:: select(unsigned int index)
         temp = temp->next;
     }
     return temp->data;
-}
-void DeliveryList:: output_delivery(ostream & output_file)
-{
 }
 
 unsigned int DeliveryList:: get_size() const

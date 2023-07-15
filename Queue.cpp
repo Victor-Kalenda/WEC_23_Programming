@@ -61,33 +61,6 @@ bool Queue:: enqueue(Datatype time, Datatype drop_location)
     }
 }
 
-Datatype Queue:: dequeue()
-{
-    if(size == 0)
-    {
-        cout << "Queue is empty" << endl;
-        return -1;
-    }
-    else
-    {
-        Datatype return_package = head->deadline;
-        if(size == 1)
-        {
-            delete head;
-            head = nullptr;
-            tail = nullptr;
-        }
-        else
-        {
-            package *next_package = head->next;
-            delete head;
-            head = next_package;
-        }
-        size--;
-        return return_package;
-    }
-}
-
 Datatype Queue:: get_deadline(unsigned int index)
 {
     if (size == 0)
@@ -109,6 +82,26 @@ Datatype Queue:: get_deadline(unsigned int index)
         }
         return temp->deadline;
     }
+}
+
+void Queue:: reset_deadline(unsigned int index)
+{
+    if(size == 0)
+    {
+        cout << "Queue is empty" << endl;
+        return;
+    }
+    if(index >= size)
+    {
+        cout << "Invalid Index" << endl;
+        return;
+    }
+    package* temp = head;
+    for(int i = 0; i < index; i++)
+    {
+        temp = temp->next;
+    }
+    temp->deadline++;
 }
 
 Datatype Queue:: get_destination(unsigned int index)
@@ -260,11 +253,11 @@ void Queue:: print()
     temp = nullptr;
 }
 
-int Queue:: offload(int quantity, int destination, int deadline)
+unsigned int Queue:: offload(unsigned int quantity, unsigned int destination, unsigned int deadline)
 {
-    int num_packages = quantity;
+    unsigned int num_packages = quantity;
     int index = 0;
-    int queue_size = size;
+    unsigned int queue_size = size;
     for(int i = 0; i < queue_size; i++)
     {
         if((*this).get_destination(index) == destination && (*this).get_deadline(index) == deadline)

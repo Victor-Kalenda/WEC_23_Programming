@@ -31,6 +31,8 @@ int check_location(string city);
 TruckList send_trucks(Queue & packages);
 float get_weeks_hours(info & trucker);
 void add_trip(info & trucker, Queue & packages);
+float get_trip_length(logistics & package);
+void reset_end_time(logistics & package, float start_interval, float end_interval);
 
 void output_logistics(TruckList & trucks);
 string get_day(unsigned int day);
@@ -38,22 +40,23 @@ string get_location(unsigned int city);
 string get_delivery_type(bool pickup);
 string convert_time(float time);
 string convert_hours(float time);
-float round_2_dec(float num);
+double to_2_dec(float num);
 
-#define HOURLY               20
-#define OVERTIME             30.0
-#define OVERTIME_LAW         60.0
-#define TRUCKER_BASE         300.0
+
+#define HOURLY               float(20)
+#define OVERTIME             float(30)
+#define OVERTIME_LAW         float(60)
+#define TRUCKER_BASE         300
 #define LATE_FEE             200 // Not implemented because system is designed to make late fees an impossibility
-#define COST_KM              0.68
-#define SPEED                100.0
-#define TRAFFIC_FACTOR       0.7 // Not yet implemented
-#define DAILY_WORK_LAW       14.0
-#define WEEKLY_WORK_LAW      70.0
+#define COST_KM              float(0.68)
+#define SPEED                float(100.0)
+#define TRAFFIC_FACTOR       float(0.7) // Not yet implemented
+#define DAILY_WORK_LAW       float(14.0)
+#define WEEKLY_WORK_LAW      float(70.0)
 #define CITIES               13
 #define MISSISSAUGA          2
 #define TRUCK_CAPACITY       5
-#define START_TIME           6.0
+#define START_TIME           float(6.0)
 
 float *dist_array = new float[CITIES*CITIES];
 char city_array[20];
@@ -71,7 +74,7 @@ int main()
 
     TruckList trucks = send_trucks(packages);
     // print trucklist to see how the truckers were added and what data is contained in each of them
-    //trucks.print();
+    trucks.print();
 
     output_logistics(trucks);
 
@@ -193,6 +196,13 @@ TruckList send_trucks(Queue & packages)
                     add_trip(trucker->data, packages);
                 }
             }
+            // if it is by law impossible for a trucker to get to the location by the deadline
+            if(trucker->data.deliveries.get_size() == 1)
+            {
+                packages.reset_deadline(0);
+                workers.late_deliveries++;
+                packages.reorder(dist_array);
+            }
             workers.insert(trucker);
         }
         current_day++;
@@ -236,8 +246,8 @@ void add_trip(info & trucker, Queue & packages)
         package.start_quantity = trucker.deliveries.select(0).end_quantity;
         if(trucker.daily_hours[trucker.current_day - 1] == 0)
         {
-            // make all truckers start driver at 06:00 and work 14 hours straight to 20:00
-            package.start_time = (trucker.current_day - 1) * 24 + START_TIME;
+            // make all truckers start driving at 06:00 and work 14 hours straight to 20:00
+            package.start_time = float(trucker.current_day - 1) * 24 + START_TIME;
         }
         else
         {
@@ -246,7 +256,7 @@ void add_trip(info & trucker, Queue & packages)
     }
     else
     {
-        package.start_time = (trucker.current_day - 1) * 24 + START_TIME;
+        package.start_time = float(trucker.current_day - 1) * 24 + START_TIME;
         package.start_destination = MISSISSAUGA;
         package.end_destination = packages.get_destination(0);
     }
@@ -255,12 +265,12 @@ void add_trip(info & trucker, Queue & packages)
     {
         package.pickup = true;
         // add a trip to the most suitable warehouse for the next package destination
-        int shortest_path = 1000;
+        float shortest_path = 1000;
         int target_warehouse = -1;
         // check which warehouse is closest to the next package destination
         for(int i = 10; i < 13; i++)
         {
-            int travel_distance = dist_array[(packages.get_destination(0) - 1) * CITIES + (i)];
+            float travel_distance = dist_array[(packages.get_destination(0) - 1) * CITIES + (i)];
             if(travel_distance < shortest_path)
             {
                 shortest_path = travel_distance;
@@ -271,7 +281,11 @@ void add_trip(info & trucker, Queue & packages)
         package.end_time = package.start_time + dist_array[(target_warehouse - 1) * CITIES + (packages.get_destination(0) - 1)] / SPEED;
         // determine if the trucker can travel to its location with the hours it has already worked today and over the week
         float weeks_hours = get_weeks_hours(trucker);
-        float trip = package.end_time - package.start_time;
+
+        // determine how long it will take to travel to the location with traffic being a facto
+        float trip = get_trip_length(package);
+
+        // make sure you are not breaking any laws
         if(trucker.daily_hours[trucker.current_day - 1] + trip < DAILY_WORK_LAW && weeks_hours + trip < WEEKLY_WORK_LAW)
         {
             package.end_quantity = TRUCK_CAPACITY;
@@ -293,13 +307,32 @@ void add_trip(info & trucker, Queue & packages)
 
         // determine if the trucker can travel to its location with the hours it has already worked today and over the week
         float weeks_hours = get_weeks_hours(trucker);
-        float trip = package.end_time - package.start_time;
+
+        // determine how long it will take to travel to the location with traffic being a factor
+        float trip = get_trip_length(package);
+
+        // make sure you are not breaking any laws
         if(trucker.daily_hours[trucker.current_day - 1] + trip < DAILY_WORK_LAW && weeks_hours + trip < WEEKLY_WORK_LAW)
         {
-            // drop off as many packages as possible at the location, dequeue the packages that have been delivered
-            package.end_quantity = packages.offload(package.start_quantity, package.end_destination, trucker.current_day);
-            trucker.daily_hours[trucker.current_day - 1] += package.end_time - package.start_time;
-            trucker.deliveries.insert(package);
+            // make sure the package is delivered before 20:00
+            if(package.end_time - float(package.end_time / 24) < 20)
+            {
+                // drop off as many packages as possible at the location, dequeue the packages that have been delivered
+                package.end_quantity = packages.offload(package.start_quantity, package.end_destination,trucker.current_day);
+                trucker.daily_hours[trucker.current_day - 1] += package.end_time - package.start_time;
+                trucker.deliveries.insert(package);
+            }
+            else
+            {
+                float travel_time = package.end_time - package.start_time;
+                package.start_time = float((trucker.current_day - 1) * 24 + 20) - travel_time;
+                package.end_time = float((trucker.current_day - 1) * 24 + 20);
+                trucker.available = false;
+                // drop off as many packages as possible at the location, dequeue the packages that have been delivered
+                package.end_quantity = packages.offload(package.start_quantity, package.end_destination,trucker.current_day);
+                trucker.daily_hours[trucker.current_day - 1] += package.end_time - package.start_time;
+                trucker.deliveries.insert(package);
+            }
         }
         else
         {
@@ -316,6 +349,43 @@ float get_weeks_hours(info & trucker)
         weeks_hours += trucker.daily_hours[i];
     }
     return weeks_hours;
+}
+float get_trip_length(logistics & package)
+{
+    // change the end_time value according to if the trucker travelled through rush hour times
+    reset_end_time(package, 7, 10);
+    // check the afternoon interval after the morning interval to see if the new end_time is in the afternoon interval
+    reset_end_time(package, 16, 18);
+    return package.end_time - package.start_time;
+}
+
+void reset_end_time(logistics & package, float start_interval, float end_interval)
+{
+    float end_hour = package.end_time - int(package.end_time / 24);
+    float start_hour = package.start_time - int(package.start_time / 24);
+    float travel_distance = (package.end_time - package.start_time) * SPEED;
+
+    // check if the delivery was completed at any point between rush hour times
+    if(start_hour < start_interval && end_hour > end_interval)
+    {
+        float travel_distance_at_100 = travel_distance - float(SPEED * TRAFFIC_FACTOR) * 3;
+        package.end_time = package.start_time + (travel_distance_at_100 / SPEED) + 3;
+    }
+    else if(start_hour < end_interval && end_hour > end_interval && start_hour > start_interval)
+    {
+        float travel_distance_at_100 = travel_distance - float(SPEED * TRAFFIC_FACTOR) * (end_interval - start_hour);
+        package.end_time = package.start_time + (travel_distance_at_100 / SPEED) * (end_interval - start_hour);
+    }
+    else if(start_hour < start_interval && end_hour < end_interval && end_hour > start_interval)
+    {
+        float travel_distance_at_100 = travel_distance - float(SPEED * TRAFFIC_FACTOR) * (end_hour - start_interval);
+        package.end_time = package.start_time + (travel_distance_at_100 / SPEED) * (end_hour - start_interval);
+    }
+    else if(start_hour > start_interval && end_hour < end_interval)
+    {
+        float travel_distance_at_100 = travel_distance - float(SPEED * TRAFFIC_FACTOR) * (end_hour - start_hour);
+        package.end_time = package.start_time + (travel_distance_at_100 / SPEED) * (end_hour - start_hour);
+    }
 }
 
 /*
@@ -357,7 +427,7 @@ void output_logistics(TruckList & trucks)
             {
                 logistics trip = trucker->data.deliveries.select(delivery);
                 // ensure that only the data for the given day is logged
-                if(trip.start_time >= (day) * 24 && trip.end_time <= (day + 1) *  24)
+                if(trip.start_time >= float(day) * 24 && trip.end_time <= float(day + 1) *  24)
                 {
                     delivery_num++;
                     day_distance += dist_array[(trip.start_destination - 1) * CITIES + (trip.end_destination - 1)];
@@ -371,32 +441,33 @@ void output_logistics(TruckList & trucks)
                             {"Start_quantity",    trip.start_quantity},
                             {"End_quantity",      trip.end_quantity}
                     };
-                    // check if the trucker worked overtime on the day
-                    if (weeks_hours > OVERTIME_LAW)
-                    {
-                        float overtime_hours = weeks_hours - OVERTIME_LAW;
-                        if (overtime_hours <= trucker->data.daily_hours[day])
-                        {
-                            // if your worked some overtime over the day
-                            day_cost += overtime_hours * OVERTIME;
-                            day_cost += (trucker->data.daily_hours[day] - overtime_hours) * HOURLY;
-                        }
-                        else
-                        {
-                            // if all your hours for the day were overtime
-                            day_cost += (overtime_hours - trucker->data.daily_hours[day]) * OVERTIME;
-                        }
-                    }
-                    else
-                    {
-                        day_cost += trucker->data.daily_hours[day] * HOURLY;
-                    }
-                    // add cost per km driven
-                    day_cost += dist_array[(trip.start_destination - 1) * CITIES + (trip.end_destination - 1)] * COST_KM;
+
+                }
+
+            }
+            // check if the trucker worked overtime on the day
+            if (weeks_hours > OVERTIME_LAW)
+            {
+                float overtime_hours = weeks_hours - OVERTIME_LAW;
+                if (overtime_hours <= trucker->data.daily_hours[day])
+                {
+                    // if your worked some overtime over the day
+                    day_cost += overtime_hours * OVERTIME;
+                    day_cost += (trucker->data.daily_hours[day] - overtime_hours) * HOURLY;
+                }
+                else
+                {
+                    // if all your hours for the day were overtime
+                    day_cost += (overtime_hours - trucker->data.daily_hours[day]) * OVERTIME;
                 }
             }
+            else
+            {
+                day_cost += trucker->data.daily_hours[day] * HOURLY;
+            }
+            day_cost += day_distance * COST_KM;
             // log the data for the deliveries on that day
-            structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_cost"] = round(day_cost);
+            structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_cost"] = to_2_dec(day_cost);
             structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_distance"] = day_distance;
             structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_time_driving"] = convert_hours(trucker->data.daily_hours[day]);
             weeks_hours += trucker->data.daily_hours[day];
@@ -407,21 +478,9 @@ void output_logistics(TruckList & trucks)
             day_cost = 0;
         }
         final_cost += truck_cost;
-        /*
-        if(weeks_hours > OVERTIME_LAW)
-        {
-            // add normal hours
-            truck_cost += OVERTIME_LAW * HOURLY;
-            truck_cost += (weeks_hours - OVERTIME_LAW) * OVERTIME;
-        }
-        else
-        {
-            truck_cost += weeks_hours * HOURLY;
-        }
-         */
-
     }
-    structure["Final_cost"] = round(final_cost);
+    final_cost += trucks.late_deliveries * LATE_FEE;
+    structure["Final_cost"] = to_2_dec(final_cost);
     output << structure.dump(4);
     output.close();
 }
@@ -492,7 +551,7 @@ string get_delivery_type(bool pickup)
 }
 string convert_time(float time)
 {
-    int time_minutes = round(time * 60);
+    int time_minutes = int(round(time * 60));
     int hours = int(time);
     int minutes = time_minutes % 60;
     if(time > 24)
@@ -523,7 +582,7 @@ string convert_time(float time)
 }
 string convert_hours(float time)
 {
-    int time_minutes = round(time * 60);
+    int time_minutes = int(round(time * 60));
     int hours = int(time);
     int minutes = time_minutes % 60;
     string output;
@@ -546,4 +605,9 @@ string convert_hours(float time)
         output += ":" + to_string(minutes);
     }
     return output;
+}
+double to_2_dec(float num)
+{
+    int i = int(round(num * 100));
+    return (i / 100.0);
 }

@@ -27,10 +27,11 @@ class TruckList {
         truck* head;
 
     public:
+        unsigned int late_deliveries = 0;
         TruckList();
-        //~TruckList();
+        ~TruckList();
         bool insert(truck* new_truck);
-        unsigned int get_size();
+        [[nodiscard]]unsigned int get_size() const;
         void print();
         truck* select(unsigned int index); // pointer to a pointer
 };

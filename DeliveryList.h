@@ -11,20 +11,20 @@ using namespace std;
 #define WEC_EXAMPLE_DELIVERYLIST_H
 
 #define MISSISSAUGA 2
-#define START_TIME  6.0
+#define START_TIME  float(6.0)
 
 struct logistics{
     float start_time = START_TIME;
     float end_time = START_TIME;
     bool pickup = true;
-    int start_destination = MISSISSAUGA;
-    int end_destination = MISSISSAUGA;
-    int start_quantity = 5;
-    int end_quantity = 0;
+    unsigned int start_destination = MISSISSAUGA;
+    unsigned int end_destination = MISSISSAUGA;
+    unsigned int start_quantity = 0;
+    unsigned int end_quantity = 0;
 };
 
 struct delivery{
-    delivery(logistics value);
+    explicit delivery(logistics value);
     logistics data;
     delivery* next = nullptr;
 };
@@ -37,11 +37,10 @@ class DeliveryList {
     public:
         DeliveryList();
         ~DeliveryList();
-        bool empty() const;
+        [[nodiscard]]bool empty() const;
         bool insert(logistics value);
         logistics select(unsigned int index);
-        void output_delivery(ostream & output_file);
-        unsigned int get_size() const;
+        [[nodiscard]]unsigned int get_size() const;
         void print();
         void reverse_list();
 };
