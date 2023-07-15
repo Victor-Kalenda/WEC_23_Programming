@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "Queue.h"
 #include "TruckList.h"
 #include <nlohmann/json.hpp>
@@ -402,6 +403,8 @@ void output_logistics(TruckList & trucks)
     json structure;
 
     float final_cost = 0;
+    cout << "Number of Trucks: " << trucks.get_size() << endl;
+    cout << "Number of Late Deliveries: " << trucks.late_deliveries << endl;
 
     structure["Final_cost"] = 0;
     for(int i = 0; i < trucks.get_size(); i++)
@@ -442,7 +445,6 @@ void output_logistics(TruckList & trucks)
                     };
 
                 }
-
             }
             // check if the trucker worked overtime on the day
             if (weeks_hours > OVERTIME_LAW)
@@ -477,8 +479,21 @@ void output_logistics(TruckList & trucks)
             day_cost = 0;
         }
         final_cost += truck_cost;
+        // output individual truck information
+        cout << "Truck #" << i + 1 << " Cost = " << truck_cost << endl;
+        float total_hours = 0;
+        cout << "Daily Hours" << endl;
+        for(int day = 0; day < 7; day++)
+        {
+            cout << get_day(day) << ": " << setw(6) << to_2_dec(trucker->data.daily_hours[day]) << "     ";
+            total_hours += trucker->data.daily_hours[day];
+        }
+        cout << endl << "Total Hours Driven: " << total_hours << endl << endl;
+
+
     }
     final_cost += trucks.late_deliveries * LATE_FEE;
+    cout << "Final Cost: " << to_2_dec(final_cost) << endl;
     structure["Final_cost"] = to_2_dec(final_cost);
     output << structure.dump(4);
     output.close();

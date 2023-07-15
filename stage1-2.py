@@ -55,5 +55,5 @@ for i in cities:
 json_object = json.dumps(dictionary, indent=4)
 
 # Writing to sample.json
-with open("../../WEC_P_S23/json/input.json", "w") as outfile:
+with open("cmake-build-debug/json/input.json", "w") as outfile:
     outfile.write(json_object)
