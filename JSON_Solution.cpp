@@ -3,7 +3,7 @@
  *
  * Example solution to 2023 WEC Programming Question
  *
- * Difficulty level: 4
+ * Difficulty level: 5
  *
  */
 
@@ -47,10 +47,10 @@ double to_2_dec(float num);
 #define OVERTIME             float(30)
 #define OVERTIME_LAW         float(60)
 #define TRUCKER_BASE         300
-#define LATE_FEE             200 // Not implemented because system is designed to make late fees an impossibility
+#define LATE_FEE             200
 #define COST_KM              float(0.68)
 #define SPEED                float(100.0)
-#define TRAFFIC_FACTOR       float(0.7) // Not yet implemented
+#define TRAFFIC_FACTOR       float(0.7)
 #define DAILY_WORK_LAW       float(14.0)
 #define WEEKLY_WORK_LAW      float(70.0)
 #define CITIES               13
@@ -74,7 +74,7 @@ int main()
 
     TruckList trucks = send_trucks(packages);
     // print trucklist to see how the truckers were added and what data is contained in each of them
-    trucks.print();
+    //trucks.print();
 
     output_logistics(trucks);
 
@@ -358,7 +358,6 @@ float get_trip_length(logistics & package)
     reset_end_time(package, 16, 18);
     return package.end_time - package.start_time;
 }
-
 void reset_end_time(logistics & package, float start_interval, float end_interval)
 {
     float end_hour = package.end_time - int(package.end_time / 24);
