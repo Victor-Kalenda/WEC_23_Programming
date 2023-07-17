@@ -1,0 +1,69 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "WEC_Solutions",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "CSV_Example::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CSV_Example-Debug-c452fad776a1bdbf6f19.json",
+					"name" : "CSV_Example",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "JSON_Example::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-JSON_Example-Debug-0b0b5e54893d516f58d6.json",
+					"name" : "JSON_Example",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/vkalenda/CLionProjects/WEC_Solutions/cmake-build-debug",
+		"source" : "/Users/vkalenda/CLionProjects/WEC_Solutions"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

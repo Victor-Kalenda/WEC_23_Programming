@@ -1,0 +1,102 @@
+{
+    "Tilbury": {
+        "Total": 4,
+        "Monday": 1,
+        "Tuesday": 0,
+        "Wednesday": 1,
+        "Thursday": 1,
+        "Friday": 1,
+        "Saturday": 0,
+        "Sunday": 0
+    },
+    "Mississauga": {
+        "Total": 9,
+        "Monday": 1,
+        "Tuesday": 1,
+        "Wednesday": 1,
+        "Thursday": 2,
+        "Friday": 1,
+        "Saturday": 1,
+        "Sunday": 2
+    },
+    "Cornwall": {
+        "Total": 8,
+        "Monday": 1,
+        "Tuesday": 1,
+        "Wednesday": 2,
+        "Thursday": 2,
+        "Friday": 1,
+        "Saturday": 1,
+        "Sunday": 0
+    },
+    "London": {
+        "Total": 10,
+        "Monday": 3,
+        "Tuesday": 0,
+        "Wednesday": 3,
+        "Thursday": 0,
+        "Friday": 3,
+        "Saturday": 1,
+        "Sunday": 0
+    },
+    "Windsor": {
+        "Total": 11,
+        "Monday": 1,
+        "Tuesday": 3,
+        "Wednesday": 2,
+        "Thursday": 1,
+        "Friday": 1,
+        "Saturday": 1,
+        "Sunday": 2
+    },
+    "Niagara_Falls": {
+        "Total": 19,
+        "Monday": 4,
+        "Tuesday": 3,
+        "Wednesday": 1,
+        "Thursday": 3,
+        "Friday": 2,
+        "Saturday": 3,
+        "Sunday": 3
+    },
+    "Barrie": {
+        "Total": 8,
+        "Monday": 1,
+        "Tuesday": 2,
+        "Wednesday": 0,
+        "Thursday": 1,
+        "Friday": 1,
+        "Saturday": 3,
+        "Sunday": 0
+    },
+    "Kingston": {
+        "Total": 6,
+        "Monday": 1,
+        "Tuesday": 0,
+        "Wednesday": 2,
+        "Thursday": 0,
+        "Friday": 1,
+        "Saturday": 2,
+        "Sunday": 0
+    },
+    "Huntsville": {
+        "Total": 21,
+        "Monday": 1,
+        "Tuesday": 2,
+        "Wednesday": 3,
+        "Thursday": 2,
+        "Friday": 2,
+        "Saturday": 3,
+        "Sunday": 8
+    },
+    "North_Bay": {
+        "Total": 4,
+        "Monday": 0,
+        "Tuesday": 1,
+        "Wednesday": 1,
+        "Thursday": 1,
+        "Friday": 1,
+        "Saturday": 0,
+        "Sunday": 0
+    }
+}

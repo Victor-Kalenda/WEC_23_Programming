@@ -1,0 +1,888 @@
+{
+    "Final_cost": 30392.021484375,
+    "Trucker_1": {
+        "Monday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 300.0
+        },
+        "Tuesday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Wednesday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Thursday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Friday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Saturday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Sunday": {
+            "Total_time_driving": 4.7599945068359375,
+            "Total_distance": 476.0,
+            "Total_cost": 418.8798828125,
+            "Delivery_1": {
+                "Start_time": 150.0,
+                "End_time": 154.75999450683594,
+                "Start_destination": "Mississauga",
+                "End_destination": "Cornwall",
+                "Distance": 476.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 3
+            }
+        }
+    },
+    "Trucker_2": {
+        "Monday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 300.0
+        },
+        "Tuesday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Wednesday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Thursday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Friday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Saturday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Sunday": {
+            "Total_time_driving": 10.279998779296875,
+            "Total_distance": 1028.0,
+            "Total_cost": 1110.239990234375,
+            "Delivery_1": {
+                "Start_time": 150.0,
+                "End_time": 153.49000549316406,
+                "Start_destination": "Mississauga",
+                "End_destination": "Windsor",
+                "Distance": 349.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_2": {
+                "Start_time": 153.49000549316406,
+                "End_time": 160.27999877929688,
+                "Start_destination": "Windsor",
+                "End_destination": "North_Bay",
+                "Distance": 679.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 2
+            }
+        }
+    },
+    "Trucker_3": {
+        "Monday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 300.0
+        },
+        "Tuesday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Wednesday": {
+            "Total_time_driving": 4.870002746582031,
+            "Total_distance": 487.0,
+            "Total_cost": 525.9600830078125,
+            "Delivery_1": {
+                "Start_time": 54.0,
+                "End_time": 57.040000915527344,
+                "Start_destination": "Mississauga",
+                "End_destination": "Kingston",
+                "Distance": 304.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_2": {
+                "Start_time": 57.040000915527344,
+                "End_time": 58.87000274658203,
+                "Start_destination": "Kingston",
+                "End_destination": "Cornwall",
+                "Distance": 183.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 3
+            }
+        },
+        "Thursday": {
+            "Total_time_driving": 13.700004577636719,
+            "Total_distance": 1370.0,
+            "Total_cost": 2301.600341796875,
+            "Delivery_1": {
+                "Start_time": 78.0,
+                "End_time": 82.76000213623047,
+                "Start_destination": "Cornwall",
+                "End_destination": "Mississauga",
+                "Distance": 476.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 2
+            },
+            "Delivery_2": {
+                "Start_time": 82.76000213623047,
+                "End_time": 83.8499984741211,
+                "Start_destination": "Mississauga",
+                "End_destination": "Niagara_Falls",
+                "Distance": 109.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 2,
+                "End_quantity": 1
+            },
+            "Delivery_3": {
+                "Start_time": 83.8499984741211,
+                "End_time": 87.18000030517578,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Huntsville",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_4": {
+                "Start_time": 87.18000030517578,
+                "End_time": 89.44000244140625,
+                "Start_destination": "Huntsville",
+                "End_destination": "Mississauga",
+                "Distance": 226.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_5": {
+                "Start_time": 89.44000244140625,
+                "End_time": 91.70000457763672,
+                "Start_destination": "Mississauga",
+                "End_destination": "Huntsville",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 3
+            }
+        },
+        "Friday": {
+            "Total_time_driving": 13.810005187988281,
+            "Total_distance": 1264.0,
+            "Total_cost": 2516.720703125,
+            "Delivery_1": {
+                "Start_time": 102.0,
+                "End_time": 104.26000213623047,
+                "Start_destination": "Huntsville",
+                "End_destination": "Mississauga",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 2
+            },
+            "Delivery_2": {
+                "Start_time": 104.26000213623047,
+                "End_time": 105.30000305175781,
+                "Start_destination": "Mississauga",
+                "End_destination": "Barrie",
+                "Distance": 104.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 2,
+                "End_quantity": 1
+            },
+            "Delivery_3": {
+                "Start_time": 105.30000305175781,
+                "End_time": 107.41000366210938,
+                "Start_destination": "Barrie",
+                "End_destination": "Niagara_Falls",
+                "Distance": 211.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_4": {
+                "Start_time": 107.41000366210938,
+                "End_time": 109.67000579833984,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Mississauga",
+                "Distance": 109.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_5": {
+                "Start_time": 109.67000579833984,
+                "End_time": 111.93000793457031,
+                "Start_destination": "Mississauga",
+                "End_destination": "Huntsville",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 2
+            },
+            "Delivery_6": {
+                "Start_time": 111.93000793457031,
+                "End_time": 115.81000518798828,
+                "Start_destination": "Huntsville",
+                "End_destination": "Kingston",
+                "Distance": 388.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 2,
+                "End_quantity": 0
+            }
+        },
+        "Saturday": {
+            "Total_time_driving": 12.039993286132813,
+            "Total_distance": 1404.0,
+            "Total_cost": 2399.51904296875,
+            "Delivery_1": {
+                "Start_time": 126.0,
+                "End_time": 127.04000091552734,
+                "Start_destination": "Kingston",
+                "End_destination": "Mississauga",
+                "Distance": 304.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_2": {
+                "Start_time": 127.04000091552734,
+                "End_time": 128.0800018310547,
+                "Start_destination": "Mississauga",
+                "End_destination": "Barrie",
+                "Distance": 104.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_3": {
+                "Start_time": 128.0800018310547,
+                "End_time": 130.19000244140625,
+                "Start_destination": "Barrie",
+                "End_destination": "Niagara_Falls",
+                "Distance": 211.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 3
+            },
+            "Delivery_4": {
+                "Start_time": 130.19000244140625,
+                "End_time": 133.52000427246094,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Huntsville",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 0
+            },
+            "Delivery_5": {
+                "Start_time": 133.52000427246094,
+                "End_time": 135.77999877929688,
+                "Start_destination": "Huntsville",
+                "End_destination": "Mississauga",
+                "Distance": 226.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_6": {
+                "Start_time": 135.77999877929688,
+                "End_time": 138.0399932861328,
+                "Start_destination": "Mississauga",
+                "End_destination": "Huntsville",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 1
+            }
+        },
+        "Sunday": {
+            "Total_time_driving": 13.279983520507813,
+            "Total_distance": 1328.0,
+            "Total_cost": 2762.237548828125,
+            "Delivery_1": {
+                "Start_time": 150.0,
+                "End_time": 153.3300018310547,
+                "Start_destination": "Huntsville",
+                "End_destination": "Niagara_Falls",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_2": {
+                "Start_time": 153.3300018310547,
+                "End_time": 154.4199981689453,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Mississauga",
+                "Distance": 109.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_3": {
+                "Start_time": 154.4199981689453,
+                "End_time": 155.50999450683594,
+                "Start_destination": "Mississauga",
+                "End_destination": "Niagara_Falls",
+                "Distance": 109.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 0
+            },
+            "Delivery_4": {
+                "Start_time": 155.50999450683594,
+                "End_time": 156.59999084472656,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Mississauga",
+                "Distance": 109.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_5": {
+                "Start_time": 156.59999084472656,
+                "End_time": 157.6899871826172,
+                "Start_destination": "Mississauga",
+                "End_destination": "Niagara_Falls",
+                "Distance": 109.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 2
+            },
+            "Delivery_6": {
+                "Start_time": 157.6899871826172,
+                "End_time": 161.01998901367188,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Huntsville",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 2,
+                "End_quantity": 0
+            },
+            "Delivery_7": {
+                "Start_time": 161.01998901367188,
+                "End_time": 163.2799835205078,
+                "Start_destination": "Huntsville",
+                "End_destination": "Mississauga",
+                "Distance": 226.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            }
+        }
+    },
+    "Trucker_4": {
+        "Monday": {
+            "Total_time_driving": 4.869999885559082,
+            "Total_distance": 487.0,
+            "Total_cost": 825.9600219726563,
+            "Delivery_1": {
+                "Start_time": 6.0,
+                "End_time": 9.039999961853027,
+                "Start_destination": "Mississauga",
+                "End_destination": "Kingston",
+                "Distance": 304.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 1
+            },
+            "Delivery_2": {
+                "Start_time": 9.039999961853027,
+                "End_time": 10.869999885559082,
+                "Start_destination": "Kingston",
+                "End_destination": "Cornwall",
+                "Distance": 183.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            }
+        },
+        "Tuesday": {
+            "Total_time_driving": 13.650005340576172,
+            "Total_distance": 1841.0,
+            "Total_cost": 3435.881103515625,
+            "Delivery_1": {
+                "Start_time": 30.0,
+                "End_time": 30.0,
+                "Start_destination": "Cornwall",
+                "End_destination": "Mississauga",
+                "Distance": 476.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_2": {
+                "Start_time": 30.0,
+                "End_time": 30.0,
+                "Start_destination": "Mississauga",
+                "End_destination": "Mississauga",
+                "Distance": 0.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_3": {
+                "Start_time": 30.0,
+                "End_time": 31.040000915527344,
+                "Start_destination": "Mississauga",
+                "End_destination": "Barrie",
+                "Distance": 104.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 3
+            },
+            "Delivery_4": {
+                "Start_time": 31.040000915527344,
+                "End_time": 33.150001525878906,
+                "Start_destination": "Barrie",
+                "End_destination": "Niagara_Falls",
+                "Distance": 211.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 0
+            },
+            "Delivery_5": {
+                "Start_time": 33.150001525878906,
+                "End_time": 34.2400016784668,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Mississauga",
+                "Distance": 109.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_6": {
+                "Start_time": 34.2400016784668,
+                "End_time": 35.33000183105469,
+                "Start_destination": "Mississauga",
+                "End_destination": "Niagara_Falls",
+                "Distance": 109.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 3
+            },
+            "Delivery_7": {
+                "Start_time": 35.33000183105469,
+                "End_time": 38.660003662109375,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Huntsville",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 2
+            },
+            "Delivery_8": {
+                "Start_time": 38.660003662109375,
+                "End_time": 43.65000534057617,
+                "Start_destination": "Huntsville",
+                "End_destination": "Tilbury",
+                "Distance": 499.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 2,
+                "End_quantity": 1
+            }
+        },
+        "Wednesday": {
+            "Total_time_driving": 13.780006408691406,
+            "Total_distance": 1373.0,
+            "Total_cost": 2587.240478515625,
+            "Delivery_1": {
+                "Start_time": 54.0,
+                "End_time": 57.75,
+                "Start_destination": "Tilbury",
+                "End_destination": "Barrie",
+                "Distance": 375.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_2": {
+                "Start_time": 57.75,
+                "End_time": 58.84000015258789,
+                "Start_destination": "Barrie",
+                "End_destination": "Mississauga",
+                "Distance": 104.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_3": {
+                "Start_time": 58.84000015258789,
+                "End_time": 59.93000030517578,
+                "Start_destination": "Mississauga",
+                "End_destination": "Niagara_Falls",
+                "Distance": 109.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 1
+            },
+            "Delivery_4": {
+                "Start_time": 59.93000030517578,
+                "End_time": 63.26000213623047,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Huntsville",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_5": {
+                "Start_time": 63.26000213623047,
+                "End_time": 65.52000427246094,
+                "Start_destination": "Huntsville",
+                "End_destination": "Mississauga",
+                "Distance": 226.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_6": {
+                "Start_time": 65.52000427246094,
+                "End_time": 67.7800064086914,
+                "Start_destination": "Mississauga",
+                "End_destination": "Huntsville",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 1
+            }
+        },
+        "Thursday": {
+            "Total_time_driving": 11.790000915527344,
+            "Total_distance": 1179.0,
+            "Total_cost": 1744.9200439453125,
+            "Delivery_1": {
+                "Start_time": 78.0,
+                "End_time": 81.87999725341797,
+                "Start_destination": "Huntsville",
+                "End_destination": "Kingston",
+                "Distance": 388.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_2": {
+                "Start_time": 81.87999725341797,
+                "End_time": 84.91999816894531,
+                "Start_destination": "Kingston",
+                "End_destination": "Mississauga",
+                "Distance": 304.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_3": {
+                "Start_time": 84.91999816894531,
+                "End_time": 87.95999908447266,
+                "Start_destination": "Mississauga",
+                "End_destination": "Kingston",
+                "Distance": 304.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 3
+            },
+            "Delivery_4": {
+                "Start_time": 87.95999908447266,
+                "End_time": 89.79000091552734,
+                "Start_destination": "Kingston",
+                "End_destination": "Cornwall",
+                "Distance": 183.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 1
+            }
+        },
+        "Friday": {
+            "Total_time_driving": 9.740005493164063,
+            "Total_distance": 974.0,
+            "Total_cost": 1441.520263671875,
+            "Delivery_1": {
+                "Start_time": 102.0,
+                "End_time": 103.83000183105469,
+                "Start_destination": "Cornwall",
+                "End_destination": "Kingston",
+                "Distance": 183.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_2": {
+                "Start_time": 103.83000183105469,
+                "End_time": 106.87000274658203,
+                "Start_destination": "Kingston",
+                "End_destination": "Mississauga",
+                "Distance": 304.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_3": {
+                "Start_time": 106.87000274658203,
+                "End_time": 109.91000366210938,
+                "Start_destination": "Mississauga",
+                "End_destination": "Kingston",
+                "Distance": 304.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_4": {
+                "Start_time": 109.91000366210938,
+                "End_time": 111.74000549316406,
+                "Start_destination": "Kingston",
+                "End_destination": "Cornwall",
+                "Distance": 183.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 3
+            }
+        },
+        "Saturday": {
+            "Total_time_driving": 11.349990844726563,
+            "Total_distance": 963.0,
+            "Total_cost": 1335.8394775390625,
+            "Delivery_1": {
+                "Start_time": 126.0,
+                "End_time": 127.83000183105469,
+                "Start_destination": "Cornwall",
+                "End_destination": "Kingston",
+                "Distance": 183.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 0
+            },
+            "Delivery_2": {
+                "Start_time": 127.83000183105469,
+                "End_time": 132.58999633789063,
+                "Start_destination": "Kingston",
+                "End_destination": "Mississauga",
+                "Distance": 304.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_3": {
+                "Start_time": 132.58999633789063,
+                "End_time": 137.34999084472656,
+                "Start_destination": "Mississauga",
+                "End_destination": "Cornwall",
+                "Distance": 476.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            }
+        },
+        "Sunday": {
+            "Total_time_driving": 4.42999267578125,
+            "Total_distance": 443.0,
+            "Total_cost": 323.7404479980469,
+            "Delivery_1": {
+                "Start_time": 150.0,
+                "End_time": 154.42999267578125,
+                "Start_destination": "Cornwall",
+                "End_destination": "Huntsville",
+                "Distance": 443.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 0
+            }
+        }
+    },
+    "Trucker_5": {
+        "Monday": {
+            "Total_time_driving": 13.180000305175781,
+            "Total_distance": 1318.0,
+            "Total_cost": 3041.43994140625,
+            "Delivery_1": {
+                "Start_time": 6.0,
+                "End_time": 7.039999961853027,
+                "Start_destination": "Mississauga",
+                "End_destination": "Barrie",
+                "Distance": 104.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_2": {
+                "Start_time": 7.039999961853027,
+                "End_time": 9.149999618530273,
+                "Start_destination": "Barrie",
+                "End_destination": "Niagara_Falls",
+                "Distance": 211.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 0
+            },
+            "Delivery_3": {
+                "Start_time": 9.149999618530273,
+                "End_time": 10.239999771118164,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Mississauga",
+                "Distance": 109.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_4": {
+                "Start_time": 10.239999771118164,
+                "End_time": 11.329999923706055,
+                "Start_destination": "Mississauga",
+                "End_destination": "Niagara_Falls",
+                "Distance": 109.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 1
+            },
+            "Delivery_5": {
+                "Start_time": 11.329999923706055,
+                "End_time": 14.65999984741211,
+                "Start_destination": "Niagara_Falls",
+                "End_destination": "Huntsville",
+                "Distance": 333.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            },
+            "Delivery_6": {
+                "Start_time": 14.65999984741211,
+                "End_time": 16.920000076293945,
+                "Start_destination": "Huntsville",
+                "End_destination": "Mississauga",
+                "Distance": 226.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_7": {
+                "Start_time": 16.920000076293945,
+                "End_time": 19.18000030517578,
+                "Start_destination": "Mississauga",
+                "End_destination": "Huntsville",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 3
+            }
+        },
+        "Tuesday": {
+            "Total_time_driving": 3.8800010681152344,
+            "Total_distance": 388.0,
+            "Total_cost": 341.4400329589844,
+            "Delivery_1": {
+                "Start_time": 30.0,
+                "End_time": 33.880001068115234,
+                "Start_destination": "Huntsville",
+                "End_destination": "Kingston",
+                "Distance": 388.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 3,
+                "End_quantity": 2
+            }
+        },
+        "Wednesday": {
+            "Total_time_driving": 11.580001831054688,
+            "Total_distance": 1158.0,
+            "Total_cost": 1250.6400146484375,
+            "Delivery_1": {
+                "Start_time": 54.0,
+                "End_time": 59.790000915527344,
+                "Start_destination": "Kingston",
+                "End_destination": "Tilbury",
+                "Distance": 579.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 2,
+                "End_quantity": 1
+            },
+            "Delivery_2": {
+                "Start_time": 59.790000915527344,
+                "End_time": 65.58000183105469,
+                "Start_destination": "Tilbury",
+                "End_destination": "Kingston",
+                "Distance": 579.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 1,
+                "End_quantity": 0
+            }
+        },
+        "Thursday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Friday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Saturday": {
+            "Total_time_driving": 0.0,
+            "Total_distance": 0.0,
+            "Total_cost": 0.0
+        },
+        "Sunday": {
+            "Total_time_driving": 8.399993896484375,
+            "Total_distance": 918.0,
+            "Total_cost": 1128.2396240234375,
+            "Delivery_1": {
+                "Start_time": 150.0,
+                "End_time": 152.25999450683594,
+                "Start_destination": "Kingston",
+                "End_destination": "Mississauga",
+                "Distance": 304.0,
+                "Delivery_type": "Pickup",
+                "Start_quantity": 0,
+                "End_quantity": 5
+            },
+            "Delivery_2": {
+                "Start_time": 152.25999450683594,
+                "End_time": 154.51998901367188,
+                "Start_destination": "Mississauga",
+                "End_destination": "Huntsville",
+                "Distance": 226.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 5,
+                "End_quantity": 4
+            },
+            "Delivery_3": {
+                "Start_time": 154.51998901367188,
+                "End_time": 158.39999389648438,
+                "Start_destination": "Huntsville",
+                "End_destination": "Kingston",
+                "Distance": 388.0,
+                "Delivery_type": "Drop-off",
+                "Start_quantity": 4,
+                "End_quantity": 3
+            }
+        }
+    }
+}

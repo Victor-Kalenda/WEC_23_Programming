@@ -1,0 +1,4 @@
+/Users/vkalenda/CLionProjects/WEC_Solutions/cmake-build-debug/CMakeFiles/CSV_Example.dir
+/Users/vkalenda/CLionProjects/WEC_Solutions/cmake-build-debug/CMakeFiles/JSON_Example.dir
+/Users/vkalenda/CLionProjects/WEC_Solutions/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/vkalenda/CLionProjects/WEC_Solutions/cmake-build-debug/CMakeFiles/rebuild_cache.dir
