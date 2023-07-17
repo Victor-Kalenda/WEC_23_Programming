@@ -4,7 +4,7 @@ Collaborators: Alexander Hamersma, Victor Kalenda, Camron Sabahi
 
 Spring 2023 Waterloo Engineering Competition Programming Solution
 
-The problem statement can be viewed on S23 WEC Programming.pdf.
+The problem statement can be viewed on S23 WEC Programming.pdf. The collaborators listed were responsible for the creation of the problem along with it's documentation. Special thanks to Professor Douglas Wilhelm Harder for providing us with the initial idea for the problem.
 
 In this implementation a linked list of truckers is designed, each trucker in this linked list inherits a linked list of trips outlining each journey a trucker has taken throughout the week. Each journey logs the data required to output a valid solution to the json directory in cmake-build-debug. Additionally, a Queue is designed to store the information of each package's destination and deadline.
 
