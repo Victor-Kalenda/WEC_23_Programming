@@ -13,7 +13,7 @@
 #include <iomanip>
 #include "Queue.h"
 #include "TruckList.h"
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 // for convenience
 using json = nlohmann::ordered_json;
@@ -279,7 +279,7 @@ void add_trip(info & trucker, Queue & packages)
             }
         }
         package.end_destination = target_warehouse;
-        package.end_time = package.start_time + dist_array[(target_warehouse - 1) * CITIES + (packages.get_destination(0) - 1)] / SPEED;
+        package.end_time = package.start_time + dist_array[(target_warehouse - 1) * CITIES + (package.start_destination - 1)] / SPEED;
         // determine if the trucker can travel to its location with the hours it has already worked today and over the week
         float weeks_hours = get_weeks_hours(trucker);
 
@@ -361,8 +361,8 @@ float get_trip_length(logistics & package)
 }
 void reset_end_time(logistics & package, float start_interval, float end_interval)
 {
-    float end_hour = package.end_time - int(package.end_time / 24);
-    float start_hour = package.start_time - int(package.start_time / 24);
+    float end_hour = package.end_time - float(int(package.end_time / 24));
+    float start_hour = package.start_time - float(int(package.start_time / 24));
     float travel_distance = (package.end_time - package.start_time) * SPEED;
 
     // check if the delivery was completed at any point between rush hour times
@@ -393,7 +393,7 @@ void reset_end_time(logistics & package, float start_interval, float end_interva
  */
 void output_logistics(TruckList & trucks)
 {
-    ofstream output("json_solution_output.json");
+    ofstream output("json/json_solution_output.json");
     if(!output)
     {
         cout << "File did not Open" << endl;
@@ -492,7 +492,7 @@ void output_logistics(TruckList & trucks)
 
 
     }
-    final_cost += trucks.late_deliveries * LATE_FEE;
+    final_cost += float(trucks.late_deliveries) * LATE_FEE;
     cout << "Final Cost: " << to_2_dec(final_cost) << endl;
     structure["Final_cost"] = to_2_dec(final_cost);
     output << structure.dump(4);

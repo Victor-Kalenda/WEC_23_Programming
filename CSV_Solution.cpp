@@ -5,6 +5,9 @@
  *
  * Difficulty level: 4
  *
+ * Remark: the Distances.csv file does not include the warehouses, therefore, Mississauga was assumed to be a warehouse
+ * as well as the headquarters for all trucks.
+ *
  */
 
 
@@ -12,7 +15,7 @@
 #include <fstream>
 #include "Queue.h"
 #include "TruckList.h"
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 // for convenience
 using json = nlohmann::ordered_json;
@@ -22,6 +25,7 @@ using namespace std;
 void analyse_travel();
 int get_number(istream & input_file);
 void ignore_cells(int count, istream & input_file);
+void print_distances();
 
 Queue identify_priorities();
 string get_city(istream & input_file, int & number_of_deliveries);
@@ -37,6 +41,9 @@ void output_logistics(TruckList & trucks);
 string get_day(unsigned int day);
 string get_location(unsigned int city);
 string get_delivery_type(bool pickup);
+string convert_time(float time);
+string convert_hours(float time);
+double to_2_dec(float num);
 
 #define HOURLY               20
 #define OVERTIME             30.0
@@ -61,25 +68,17 @@ int main()
 {
     analyse_travel();
     // Print array to test analysis
-
-    for(int i = 0; i < CITIES; i++)
-    {
-        for(int j = 0; j < CITIES; j++)
-        {
-            cout << dist_array[ i * CITIES + j] << " - ";
-        }
-        cout << endl;
-    }
+    print_distances();
 
 
-    //Queue packages = identify_priorities();
+    Queue packages = identify_priorities();
     // print queue to test the addition and reordering of data into the queue
     //packages.print();
 
-    //TruckList trucks = send_trucks(packages);
+    TruckList trucks = send_trucks(packages);
     //trucks.print();
 
-    //output_logistics(trucks);
+    output_logistics(trucks);
 
     // There is no longer a use for dist_array
     delete [] dist_array;
@@ -160,6 +159,18 @@ int get_number(istream & input_file)
     }
     return atoi(array);
 }
+void print_distances()
+{
+    for(int i = 0; i < CITIES; i++)
+    {
+        for(int j = 0; j < CITIES; j++)
+        {
+            cout << dist_array[ i * CITIES + j] << " - ";
+        }
+        cout << endl;
+    }
+}
+
 
 /*
  * Identifies which packages should be sent first and which ones should be sent last. Priorities are ordered according
@@ -453,7 +464,7 @@ void add_trip(info & trucker, Queue & packages)
         }
          */
         package.end_destination = target_warehouse;
-        package.end_time = package.start_time + dist_array[(target_warehouse - 1) * CITIES + (packages.get_destination(0) - 1)] / SPEED;
+        package.end_time = package.start_time + dist_array[(target_warehouse - 1) * CITIES + (package.start_destination - 1)] / SPEED;
         // determine if the trucker can travel to its location with the hours it has already worked today and over the week
         float weeks_hours = get_weeks_hours(trucker);
         float trip = package.end_time - package.start_time;
@@ -508,7 +519,7 @@ float get_weeks_hours(info & trucker)
  */
 void output_logistics(TruckList & trucks)
 {
-    ofstream output("csv_solution_output.json");
+    ofstream output("json/csv_solution_output.json");
     if(!output)
     {
         cout << "File did not Open" << endl;
@@ -518,6 +529,8 @@ void output_logistics(TruckList & trucks)
     json structure;
 
     float final_cost = 0;
+    cout << "Number of Trucks: " << trucks.get_size() << endl;
+    cout << "Number of Late Deliveries: " << trucks.late_deliveries << endl;
 
     structure["Final_cost"] = 0;
     for(int i = 0; i < trucks.get_size(); i++)
@@ -542,13 +555,13 @@ void output_logistics(TruckList & trucks)
             {
                 logistics trip = trucker->data.deliveries.select(delivery);
                 // ensure that only the data for the given day is logged
-                if(trip.start_time >= (day) * 24 && trip.end_time <= (day + 1) *  24)
+                if(trip.start_time >= float(day) * 24 && trip.end_time <= float(day + 1) *  24)
                 {
                     delivery_num++;
                     day_distance += dist_array[(trip.start_destination - 1) * CITIES + (trip.end_destination - 1)];
                     structure["Trucker_" + to_string(i + 1)][get_day(day)]["Delivery_" + to_string(delivery_num)] = {
-                            {"Start_time",        trip.start_time},
-                            {"End_time",          trip.end_time},
+                            {"Start_time",        convert_time(trip.start_time)},
+                            {"End_time",          convert_time(trip.end_time)},
                             {"Start_destination", get_location(trip.start_destination)},
                             {"End_destination",   get_location(trip.end_destination)},
                             {"Distance",          dist_array[(trip.start_destination - 1) * CITIES + (trip.end_destination - 1)]},
@@ -556,34 +569,34 @@ void output_logistics(TruckList & trucks)
                             {"Start_quantity",    trip.start_quantity},
                             {"End_quantity",      trip.end_quantity}
                     };
-                    // check if the trucker worked overtime on the day
-                    if (weeks_hours > OVERTIME_LAW)
-                    {
-                        float overtime_hours = weeks_hours - OVERTIME_LAW;
-                        if (overtime_hours <= trucker->data.daily_hours[day])
-                        {
-                            // if your worked some overtime over the day
-                            day_cost += overtime_hours * OVERTIME;
-                            day_cost += (trucker->data.daily_hours[day] - overtime_hours) * HOURLY;
-                        }
-                        else
-                        {
-                            // if all your hours for the day were overtime
-                            day_cost += (overtime_hours - trucker->data.daily_hours[day]) * OVERTIME;
-                        }
-                    }
-                    else
-                    {
-                        day_cost += trucker->data.daily_hours[day] * HOURLY;
-                    }
-                    // add cost per km driven
-                    day_cost += dist_array[(trip.start_destination - 1) * CITIES + (trip.end_destination - 1)] * COST_KM;
+
                 }
             }
+            // check if the trucker worked overtime on the day
+            if (weeks_hours > OVERTIME_LAW)
+            {
+                float overtime_hours = weeks_hours - OVERTIME_LAW;
+                if (overtime_hours <= trucker->data.daily_hours[day])
+                {
+                    // if your worked some overtime over the day
+                    day_cost += overtime_hours * OVERTIME;
+                    day_cost += (trucker->data.daily_hours[day] - overtime_hours) * HOURLY;
+                }
+                else
+                {
+                    // if all your hours for the day were overtime
+                    day_cost += (overtime_hours - trucker->data.daily_hours[day]) * OVERTIME;
+                }
+            }
+            else
+            {
+                day_cost += trucker->data.daily_hours[day] * HOURLY;
+            }
+            day_cost += day_distance * COST_KM;
             // log the data for the deliveries on that day
-            structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_cost"] = day_cost;
+            structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_cost"] = to_2_dec(day_cost);
             structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_distance"] = day_distance;
-            structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_time_driving"] = trucker->data.daily_hours[day];
+            structure["Trucker_" + to_string(i + 1)][get_day(day)]["Total_time_driving"] = convert_hours(trucker->data.daily_hours[day]);
             weeks_hours += trucker->data.daily_hours[day];
 
             // add to weekly cost of the trucker
@@ -592,21 +605,22 @@ void output_logistics(TruckList & trucks)
             day_cost = 0;
         }
         final_cost += truck_cost;
-        /*
-        if(weeks_hours > OVERTIME_LAW)
+        // output individual truck information
+        cout << "Truck #" << i + 1 << " Cost = " << truck_cost << endl;
+        float total_hours = 0;
+        cout << "Daily Hours" << endl;
+        for(int day = 0; day < 7; day++)
         {
-            // add normal hours
-            truck_cost += OVERTIME_LAW * HOURLY;
-            truck_cost += (weeks_hours - OVERTIME_LAW) * OVERTIME;
+            cout << get_day(day) << ": " << setw(6) << to_2_dec(trucker->data.daily_hours[day]) << "     ";
+            total_hours += trucker->data.daily_hours[day];
         }
-        else
-        {
-            truck_cost += weeks_hours * HOURLY;
-        }
-         */
+        cout << endl << "Total Hours Driven: " << total_hours << endl << endl;
+
 
     }
-    structure["Final_cost"] = final_cost;
+    final_cost += float(trucks.late_deliveries) * LATE_FEE;
+    cout << "Final Cost: " << to_2_dec(final_cost) << endl;
+    structure["Final_cost"] = to_2_dec(final_cost);
     output << structure.dump(4);
     output.close();
 }
@@ -674,4 +688,66 @@ string get_delivery_type(bool pickup)
         return "Pickup";
     }
     return "Drop-off";
+}
+string convert_time(float time)
+{
+    int time_minutes = int(round(time * 60));
+    int hours = int(time);
+    int minutes = time_minutes % 60;
+    if(time > 24)
+    {
+        hours = hours - (24 * (hours/24));
+    }
+    string output;
+
+    // account for zeros
+    if(hours < 10)
+    {
+        output = "0" + to_string(hours);
+    }
+    else
+    {
+        output = to_string(hours);
+    }
+
+    if(minutes < 10)
+    {
+        output += ":0" + to_string(minutes);
+    }
+    else
+    {
+        output += ":" + to_string(minutes);
+    }
+    return output;
+}
+string convert_hours(float time)
+{
+    int time_minutes = int(round(time * 60));
+    int hours = int(time);
+    int minutes = time_minutes % 60;
+    string output;
+    // account for zeros
+    if(hours < 10)
+    {
+        output = "0" + to_string(hours);
+    }
+    else
+    {
+        output = to_string(hours);
+    }
+
+    if(minutes < 10)
+    {
+        output += ":0" + to_string(minutes);
+    }
+    else
+    {
+        output += ":" + to_string(minutes);
+    }
+    return output;
+}
+double to_2_dec(float num)
+{
+    int i = int(round(num * 100));
+    return (i / 100.0);
 }
