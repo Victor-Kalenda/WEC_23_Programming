@@ -46,19 +46,19 @@ string convert_hours(float time);
 double to_2_dec(float num);
 
 #define HOURLY               20
-#define OVERTIME             30.0
-#define OVERTIME_LAW         60.0
-#define TRUCKER_BASE         300.0
+#define OVERTIME             float(30.0)
+#define OVERTIME_LAW         float(60.0)
+#define TRUCKER_BASE         float(300.0)
 #define LATE_FEE             200
-#define COST_KM              0.68
-#define SPEED                100.0
+#define COST_KM              float(0.68)
+#define SPEED                float(100.0)
 #define TRAFFIC_FACTOR       0.7 // Not yet implemented
-#define DAILY_WORK_LAW       14.0
-#define WEEKLY_WORK_LAW      70.0
+#define DAILY_WORK_LAW       float(14.0)
+#define WEEKLY_WORK_LAW      float(70.0)
 #define CITIES               10
 #define MISSISSAUGA          2
 #define TRUCK_CAPACITY       5
-#define START_TIME           6.0
+#define START_TIME           float(6.0)
 
 float *dist_array = new float[CITIES*CITIES];
 char city_array[20];
@@ -68,7 +68,7 @@ int main()
 {
     analyse_travel();
     // Print array to test analysis
-    print_distances();
+    //print_distances();
 
 
     Queue packages = identify_priorities();
@@ -108,7 +108,6 @@ void analyse_travel()
         ignore_cells(1, distances);
         for(int j = 0; j < CITIES; j++)
         {
-            char test;
             if(i == j)
             {
                 // distances between the same city
@@ -117,10 +116,7 @@ void analyse_travel()
             }
             else
             {
-                dist_array[i * CITIES + j] = get_number(distances);
-                //distances >> test;
-                //cout << test;
-                //distances >> dist_array[i*j];
+                dist_array[i * CITIES + j] = float(get_number(distances));
             }
         }
         // Ignore the rest of the data
@@ -202,7 +198,7 @@ Queue identify_priorities()
         }
         // ignore the first line
         ignore_cells(2, location);
-        for(int i = 0; i < demand; i++)
+        for(int j = 0; j < demand; j++)
         {
             packages.enqueue(get_day(location), check_location(city));
         }
@@ -357,6 +353,7 @@ int check_location(string city)
     {
         return 10;
     }
+    return 0;
 }
 
 /*
@@ -430,7 +427,7 @@ void add_trip(info & trucker, Queue & packages)
         if(trucker.daily_hours[trucker.current_day - 1] == 0)
         {
             // make all truckers start driver at 06:00 and work 14 hours straight to 20:00
-            package.start_time = (trucker.current_day - 1) * 24 + START_TIME;
+            package.start_time = float(trucker.current_day - 1) * 24 + START_TIME;
         }
         else
         {
@@ -439,7 +436,7 @@ void add_trip(info & trucker, Queue & packages)
     }
     else
     {
-        package.start_time = (trucker.current_day - 1) * 24 + START_TIME;
+        package.start_time = float(trucker.current_day - 1) * 24 + START_TIME;
         package.start_destination = MISSISSAUGA;
         package.end_destination = packages.get_destination(0);
     }
