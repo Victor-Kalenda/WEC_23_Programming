@@ -269,7 +269,7 @@ void add_trip(info & trucker, Queue & packages)
         float shortest_path = 1000;
         int target_warehouse = -1;
         // check which warehouse is closest to the next package destination
-        for(int i = 10; i < 13; i++)
+        for(int i = 10; i < CITIES; i++)
         {
             float travel_distance = dist_array[(packages.get_destination(0) - 1) * CITIES + (i)];
             if(travel_distance < shortest_path)
